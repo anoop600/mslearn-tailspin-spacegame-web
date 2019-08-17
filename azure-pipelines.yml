@@ -9,6 +9,15 @@ variables:
   dotnetSdkVersion: '2.1.505'
 
 steps:
+
+#Setup Sonarqube
+- task: SonarCloudPrepare@1
+  displayName: SonarCloud-Preparation
+  inputs:
+    SonarCloud: 'SONAR_ENDPOINT'
+    organization: 'anoop600-github'
+    scannerMode: Other
+
 - task: DotNetCoreInstaller@0
   displayName: 'Use .NET Core SDK $(dotnetSdkVersion)'
   inputs:
@@ -25,6 +34,9 @@ steps:
 - task: gulp@1
   displayName: 'Run gulp tasks'
 
+- task: SonarCloudPublish@1
+  displayname: 'Publish Quality Gate Result'
+  
 - script: 'echo "$(Build.DefinitionName), $(Build.BuildId), $(Build.BuildNumber)" > buildinfo.txt'
   displayName: 'Write build info'
   workingDirectory: $(wwwrootDir)
