@@ -16,7 +16,7 @@ steps:
   inputs:
     SonarCloud: 'SONAR_ENDPOINT'
     organization: 'anoop600-github'
-    scannerMode: Other
+    projectKey: MSLEARN
 
 - task: DotNetCoreInstaller@0
   displayName: 'Use .NET Core SDK $(dotnetSdkVersion)'
@@ -34,12 +34,6 @@ steps:
 - task: gulp@1
   displayName: 'Run gulp tasks'
 
-- task: SonarCloudAnalyze@1
-  displayName: 'Run Code Analysis'
-
-- task: SonarCloudPublish@1
-  displayName: 'Publish Quality Gate Result'
-
 - script: 'echo "$(Build.DefinitionName), $(Build.BuildId), $(Build.BuildNumber)" > buildinfo.txt'
   displayName: 'Write build info'
   workingDirectory: $(wwwrootDir)
@@ -56,6 +50,12 @@ steps:
     command: 'build'
     arguments: '--no-restore --configuration $(buildConfiguration)'
     projects: '**/*.csproj'
+
+- task: SonarCloudAnalyze@1
+  displayName: 'Run Code Analysis'
+
+- task: SonarCloudPublish@1
+  displayName: 'Publish Quality Gate Result'
 
 - task: DotNetCoreCLI@2
   displayName: 'Publish the project - $(buildConfiguration)'
