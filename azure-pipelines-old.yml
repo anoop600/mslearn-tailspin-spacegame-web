@@ -11,12 +11,12 @@ variables:
 steps:
 
 #Setup Sonarqube
-# - task: SonarCloudPrepare@1
-#   displayName: SonarCloud-Preparation
-#   inputs:
-#     SonarCloud: 'SONAR_ENDPOINT'
-#     organization: 'anoop600-github'
-#     projectKey: MSLEARN
+- task: SonarCloudPrepare@1
+  displayName: SonarCloud-Preparation
+  inputs:
+    SonarCloud: 'SONAR_ENDPOINT'
+    organization: 'anoop600-github'
+    projectKey: MSLEARN
 
 - task: DotNetCoreInstaller@0
   displayName: 'Use .NET Core SDK $(dotnetSdkVersion)'
@@ -44,19 +44,27 @@ steps:
     command: 'restore'
     projects: '**/*.csproj'
 
-- template: templates/build.yml
-  parameters:
-    buildConfiguration: 'Debug'
+- task: DotNetCoreCLI@2
+  displayName: 'Build the project - $(buildConfiguration)'
+  inputs:
+    command: 'build'
+    arguments: '--no-restore --configuration $(buildConfiguration)'
+    projects: '**/*.csproj'
 
-- template: templates/build.yml
-  parameters:
-    buildConfiguration: 'Release'
+- task: SonarCloudAnalyze@1
+  displayName: 'Run Code Analysis'
 
-# - task: SonarCloudAnalyze@1
-#   displayName: 'Run Code Analysis'
+- task: SonarCloudPublish@1
+  displayName: 'Publish Quality Gate Result'
 
-# - task: SonarCloudPublish@1
-#   displayName: 'Publish Quality Gate Result'
+- task: DotNetCoreCLI@2
+  displayName: 'Publish the project - $(buildConfiguration)'
+  inputs:
+    command: 'publish'
+    projects: '**/*.csproj'
+    publishWebProjects: false
+    arguments: '--no-build --configuration $(buildConfiguration) --output $(Build.ArtifactStagingDirectory)/$(buildConfiguration)'
+    zipAfterPublish: true
 
 - task: PublishBuildArtifacts@1
   displayName: 'Publish Artifact: drop'
