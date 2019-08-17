@@ -14,9 +14,10 @@ variables:
 
 steps:
 
-- task: DotNetCoreCLI@2
-  displayName: 'Build the project'
-  inputs:
-    command: 'build'
-    arguments: '--no-restore --configuration Release'
-    projects: '**/*.csproj'
+ - script: dotnet build MyProject.csproj --no-restore --configuration Release
+# - task: DotNetCoreCLI@2
+#   displayName: 'Build the project'
+#   inputs:
+#     command: 'build'
+#     arguments: '--no-restore --configuration Release'
+#     projects: '**/*.csproj'
