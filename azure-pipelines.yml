@@ -35,8 +35,8 @@ steps:
   displayName: 'Run gulp tasks'
 
 - task: SonarCloudPublish@1
-  displayname: 'Publish Quality Gate Result'
-  
+  displayName: 'Publish Quality Gate Result'
+
 - script: 'echo "$(Build.DefinitionName), $(Build.BuildId), $(Build.BuildNumber)" > buildinfo.txt'
   displayName: 'Write build info'
   workingDirectory: $(wwwrootDir)
