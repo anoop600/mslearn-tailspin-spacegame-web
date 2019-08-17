@@ -1,11 +1,4 @@
 steps:
-- task: SonarCloudPrepare@1
-  displayName: SonarCloud-Preparation
-  inputs:
-    SonarCloud: 'SONAR_ENDPOINT'
-    organization: 'anoop600-github'
-    projectKey: MSLEARN
-
 - task: SonarCloudAnalyze@1
   displayName: 'Run Code Analysis'
 
