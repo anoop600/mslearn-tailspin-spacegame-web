@@ -48,15 +48,15 @@ steps:
   parameters:
     buildConfiguration: 'Debug'
 
+- task: SonarCloudAnalyze@1
+  displayName: 'Run Code Analysis'
+
+- task: SonarCloudPublish@1
+  displayName: 'Publish Quality Gate Result'
+
 - template: templates/build.yml
   parameters:
     buildConfiguration: 'Release'
-
-# - task: SonarCloudAnalyze@1
-#   displayName: 'Run Code Analysis'
-
-# - task: SonarCloudPublish@1
-#   displayName: 'Publish Quality Gate Result'
 
 - task: PublishBuildArtifacts@1
   displayName: 'Publish Artifact: drop'
