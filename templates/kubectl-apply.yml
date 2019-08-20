@@ -1,0 +1,18 @@
+parameters:
+  connectionType: 'Azure Resource Manager'
+  azureSubscriptionEndpoint: 'Visual Studio Enterprise (b9caa756-30bd-4498-a712-d906a53cc2a2)'
+  azureResourceGroup: mindtreeYogendra
+  kubernetesCluster: 'java-crm'
+
+
+steps:
+- task: Kubernetes@1
+  displayName: 'kubectl apply'
+  inputs:
+    connectionType: ${{parameters.connectionType}}
+    azureSubscriptionEndpoint: ${{parameters.azureSubscriptionEndpoint}}
+    azureResourceGroup: ${{parameters.azureResourceGroup}}
+    kubernetesCluster: ${{parameters.kubernetesCluster}}
+    namespace: default
+    command: apply
+    arguments: '-f ${{folder}}'
